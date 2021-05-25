@@ -8,7 +8,8 @@
 ### Contexte
 
 Microsoft a décidé de remplacer le jeu par défaut dans son système d'exploitation Windows. Plutôt que de fournir le bon vieux Démineur, le futur Windows 30 contiendra plutôt un jeu de sudoku. On rappelle qu'un sudoku est une grille de taille 9×9 dans laquelle on doit placer exactement un chiffre entre 0 et 9 dans chacune des cases. Un problème sudoku possède généralement un certain nombre de cases pré-remplies, comme ci-dessous:
-Grille de sudoku
+
+![Grille de sudoku](https://github.com/ethicnology/uqac-958-sat-solver/blob/main/sudoku.png)
 
 Le joueur cherche à compléter la grille selon les conditions suivantes:
 
