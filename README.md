@@ -13,10 +13,10 @@ Microsoft a décidé de remplacer le jeu par défaut dans son système d'exploit
 
 Le joueur cherche à compléter la grille selon les conditions suivantes:
 
-* Chaque case ne peut contenir qu’un seul chiffre
-* Chaque chiffre doit apparaître exactement une fois dans chaque ligne de la grille
-* Chaque chiffre doit apparaître exactement une fois dans chaque colonne de la grille
-* Chaque chiffre doit apparaître exactement une fois dans chacune des neuf sous-grilles de taille 3×3
+1. Chaque case ne peut contenir qu’un seul chiffre
+1. Chaque chiffre doit apparaître exactement une fois dans chaque ligne de la grille
+1. Chaque chiffre doit apparaître exactement une fois dans chaque colonne de la grille
+1. Chaque chiffre doit apparaître exactement une fois dans chacune des neuf sous-grilles de taille 3×3
 
 Vous êtes en charge de tester ce logiciel. Plus précisément, vous devez vous assurer que le jeu ne propose que des grilles pour lesquelles il existe une solution; de plus, un de vos tests doit visiter la partie du code de l'application qui annonce que le joueur a gagné. Mais voilà: comme le jeu ne propose jamais la même grille à chaque exécution, il vous est impossible de simplement coder en dur les données de votre test.
 
@@ -61,15 +61,15 @@ Identifiez d'abord les variables propositionnelles nécessaires à la modélisat
 Les points seront accordés au devoir selon le barème suivant:
 |Élément|	Points|
 |-------|---------|
-|Choix des variables propositionnelles	|1|
-|Modélisation de la propriété 1	|2|
-|Modélisation de la propriété 2	|2|
-|Modélisation de la propriété 3	|2|
-|Modélisation de la propriété 4	|2|
-|Modélisation du contenu de départ de la grille	|2|
-|Interaction correcte avec le solveur	|1|
-|Fonctionnement correct des entrées/sorties |1|
-|Conversion de la solution en grille complète	|2|
+|Choix des variables propositionnelles ❌ |1|
+|Modélisation de la propriété 1 ❌	|2|
+|Modélisation de la propriété 2 ❌	|2|
+|Modélisation de la propriété 3 ❌	|2|
+|Modélisation de la propriété 4 ❌	|2|
+|Modélisation du contenu de départ de la grille ❌	|2|
+|Interaction correcte avec le solveur ❌	|1|
+|Fonctionnement correct des entrées/sorties ❌ |1|
+|Conversion de la solution en grille complète ❌	|2|
 |Total	|15|
 
 Un travail qui ne respecte pas les consignes, qui ne compile pas ou qui s'exécute en produisant des erreurs inattendues se verra donner la note de zéro. Il est de la responsabilité de l'étudiant de vérifier les fichiers avant de les remettre.
