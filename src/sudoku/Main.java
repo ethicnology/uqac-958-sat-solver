@@ -4,7 +4,7 @@ package sudoku;
  * Main class that demonstrate the sudoku resolver
  * 
  * @author Léo Monteiro (CODE PERMANENT)
- * @author Jules Emery (CODE PERMANENT)
+ * @author Jules Emery (EMEJ05119405)
  * @author Antoine Bouabana (BOUA25119908)
  *
  */
