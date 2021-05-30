@@ -24,25 +24,42 @@ class SudokuResolver {
 	/**
 	 * Resolves the input puzzle string and returns the output puzzle string
 	 * @return the output puzzle string (the resolved sudoku)
+	 * @throws SudokuException if sudoku cannot be resolved
 	 */
-	String resolve() {
+	String resolve() throws SudokuException {
 		// TEMP
 		return this.input;
 	}
 	
 	
+	
+	
+	////////////////////////////////////
+	// UTILS
+	
+	/**
+	 * Exception for sudokus
+	 */
+	static class SudokuException extends Exception {
+		private static final long serialVersionUID = 1L;
+		
+		public SudokuException(String errorMessage) {
+	        super(errorMessage);
+	    }
+	}
+	
 
 	/**
 	 * Verify that the passed puzzle string is valid (81 characters long and only valid characters)
 	 * @param puzzleString the puzzle string to verify
-	 * @throws Exception
+	 * @throws SudokuException if not valid
 	 */
-	private static void verifyPuzzleString(String puzzleString) throws Exception {
+	private static void verifyPuzzleString(String puzzleString) throws SudokuException {
 		if(puzzleString.length() != 81)
-			throw new Exception("The puzzle string must be 81 characters long. Got : " + puzzleString.length());
+			throw new SudokuException("The puzzle string must be 81 characters long. Got : " + puzzleString.length());
 		
 		if(!puzzlePattern.matcher(puzzleString).matches())
-			throw new Exception("The puzzle string must only contains '#' and digits '1-9'. Got : " + puzzleString);
+			throw new SudokuException("The puzzle string must only contains '#' and digits '1-9'. Got : " + puzzleString);
 	}
 	
 	/**
