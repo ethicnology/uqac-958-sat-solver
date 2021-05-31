@@ -2,10 +2,14 @@ package sudoku;
 
 import java.util.regex.Pattern;
 
+import stev.booleans.PropositionalVariable;
+
 /**
  * Resolve a Sudoku with propositional logic and an SAT solver
  */
 class SudokuResolver {
+	
+	private PropositionalVariable[][][] variables;
 
 	private String input;
 	
@@ -27,11 +31,25 @@ class SudokuResolver {
 	 * @throws SudokuException if sudoku cannot be resolved
 	 */
 	String resolve() throws SudokuException {
-		// TEMP
+
+		// create variables
+		initVariables();
+		
 		return this.input;
 	}
 	
-	
+	private void initVariables() {
+		this.variables = new PropositionalVariable[9][9][10];
+		
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				for(int k = 0; k < 10; k++) {
+					String varName = "" + i + ',' + j + '#' + k;
+					this.variables[i][j][k] = new PropositionalVariable(varName);
+				}
+			}
+		}
+	}
 	
 	
 	////////////////////////////////////
