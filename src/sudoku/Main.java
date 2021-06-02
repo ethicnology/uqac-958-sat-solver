@@ -15,7 +15,7 @@ public class Main {
 		if(args.length != 1)
 			throw new Exception("You must pass exactly 1 parameter : the sudoku input string ! Got : " + args.length);
 		
-		// DEBUG ONLY
+		// DEBUG ONLY !!! (comment to disable Debug logging)
 		Debug.PRINT_DEBUG = true;
 		
 		// get the sudoku input string
@@ -31,10 +31,10 @@ public class Main {
 		String sudokuOutputString = sudoku.getSudokuString();
 		
 		// print the sudoku output string (resolved sudoku)
-		System.out.println(sudokuOutputString);
+		if(!Debug.PRINT_DEBUG) System.out.println(sudokuOutputString);
 
-		// rich print for better visualization (FOR DEBUG PURPOSES)
-		displayRichIOSudoku(sudokuInputString, sudokuOutputString);
+		Debug.printDebug(getRichSudokuDisplay(sudokuInputString, sudokuOutputString));
+		Debug.printDebug("\nResulting sudoku output : " + sudokuOutputString);
 	}
 	
 	
@@ -45,22 +45,25 @@ public class Main {
 	// UTILS
 	
 	/**
-	 * Display next to each other, the input sudoku string and the output sudoku string passed in the parameters
+	 * Returns a rich display of the two grid passed in parameters
 	 */
-	static private void displayRichIOSudoku(String input, String output) {
-		System.out.println("\n");
-		System.out.println("╔══ Input ════╦══ Output ═══╗");
-		System.out.println("║             ║             ║");
+	static private String getRichSudokuDisplay(String input, String output) {
+		String res = "";
+
+		res += "╔══ Input ════╦══ Output ═══╗\n";
+		res += "║             ║             ║\n";
 
 		String[] splittedInput = splitSudokuString(input);
 		String[] splittedOutput = splitSudokuString(output);
 		
 		for(int i = 0; i < splittedInput.length && i < splittedOutput.length; i++) {
-			System.out.println("║  " + splittedInput[i] + "  ║  " + splittedOutput[i] + "  ║");
+			res += "║  " + splittedInput[i] + "  ║  " + splittedOutput[i] + "  ║\n";
 		}
 
-		System.out.println("║             ║             ║");
-		System.out.println("╚═════════════╩═════════════╝");
+		res += "║             ║             ║\n";
+		res += "╚═════════════╩═════════════╝ ";
+		
+		return res;
 	}
 	
 	// split the passed sudoku string in chunks of length 9
