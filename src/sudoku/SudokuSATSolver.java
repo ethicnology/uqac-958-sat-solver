@@ -8,6 +8,7 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 
 import stev.booleans.PropositionalVariable;
+import sudoku.Debug.PrintMode;
 import sudoku.Sudoku.Cell;
 import sudoku.Sudoku.SudokuException;
 
@@ -42,6 +43,8 @@ public class SudokuSATSolver {
 				throw new SudokuException("An error occured while creating the SAT solver", error);
 			}
 		}
+		
+		Debug.printDebug("Création du solveur SAT à partir de la logique du sudoku");
 	}
 	
 	/**
@@ -50,6 +53,8 @@ public class SudokuSATSolver {
 	 * @throws SudokuException if the sudoku cannot be resolved
 	 */
 	public void solve(Sudoku sudoku) throws SudokuException {
+		Debug.printDebug("SudokuSATSolver.solve() - résolution du sudoku", PrintMode.START);
+		
 		// get the sudoku propositional logic instance
 		SudokuPropositionalLogic sudokuLogic = SudokuPropositionalLogic.getInstance();
 		
@@ -58,15 +63,21 @@ public class SudokuSATSolver {
 		
 		// get the assumptions about the sudoku
 		int[] assumptions = getAssumptionsFromSudoku(sudoku, sudokuLogic);
+		Debug.printDebug("Récupération des valeurs du sudoku pour transfert au SAT");
 		
 		try {
+			boolean isSatisfiable = problem.isSatisfiable(new VecInt(assumptions));
+			Debug.printDebug("Vérification de la satisfaisabilité du problème");
+			
 			// if it is satisfiable, resolve the sudoku
-			if(problem.isSatisfiable(new VecInt(assumptions))) {
+			if(isSatisfiable) {
 				// get the model
 				int[] modelResult = problem.model();
+				Debug.printDebug("Résolution du sudoku et récupération du modèle");
 
 				// update the sudoku with the resulting model
 				updateSudokuWithModel(sudoku, sudokuLogic, modelResult);
+				Debug.printDebug("Application du modèle au sudoku");
 			}
 			// else, throw because the sudoku isn't resolvable
 			else throw new SudokuException("This sudoku cannot be resolved !");
@@ -74,6 +85,8 @@ public class SudokuSATSolver {
 		catch (TimeoutException error) {
 			throw new SudokuException("An error occured while checking the satisfiability of the SAT problem", error);
 		}
+
+		Debug.printDebug("SudokuSATSolver.solve() - résolution du sudoku", PrintMode.END);
 	}
 	
 	//////////////////////////////////////////////////////////////////////

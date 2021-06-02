@@ -15,6 +15,9 @@ public class Main {
 		if(args.length != 1)
 			throw new Exception("You must pass exactly 1 parameter : the sudoku input string ! Got : " + args.length);
 		
+		// DEBUG ONLY
+		Debug.PRINT_DEBUG = true;
+		
 		// get the sudoku input string
 		String sudokuInputString = args[0];
 		

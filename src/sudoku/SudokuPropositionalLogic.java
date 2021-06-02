@@ -10,6 +10,7 @@ import stev.booleans.BooleanFormula;
 import stev.booleans.Not;
 import stev.booleans.Or;
 import stev.booleans.PropositionalVariable;
+import sudoku.Debug.PrintMode;
 import sudoku.Sudoku.Cell;
 
 /**
@@ -43,6 +44,8 @@ public class SudokuPropositionalLogic {
 	 * Generates the propositional logic behind a Sudoku
 	 */
 	private SudokuPropositionalLogic() {
+		Debug.printDebug("SudokuPropositionalLogic() - création de la logique propositionelle du sudoku", PrintMode.START);
+		
 		// 1 - generate all the propositional variables
 		this.generatePropositionalVariables();
 		
@@ -55,9 +58,12 @@ public class SudokuPropositionalLogic {
 		// 3 - combine all the formulas into the sudoku formula
 		this.sudokuFormula = new And(formula1); // TEMP (ajouter les formules à mesure qu'on les développe)
 		//this.sudokuFormula = new And(formula1, formula2, formula3, formula4);
+		Debug.printDebug("Création et fusion des formules pour les 4 conditions du sudoku");
 		
 		// 4 - generate the clauses and the variables maps
 		this.generateClausesAndVariablesMaps(this.sudokuFormula);
+
+		Debug.printDebug("SudokuPropositionalLogic() - création de la logique propositionelle du sudoku", PrintMode.END);
 	}
 	
 	/**
@@ -139,6 +145,8 @@ public class SudokuPropositionalLogic {
 				}
 			}
 		}
+		
+		Debug.printDebug("Création des variable propositionnelles");
 	}
 
 	/**
@@ -147,9 +155,11 @@ public class SudokuPropositionalLogic {
 	private void generateClausesAndVariablesMaps(BooleanFormula sudokuFormula) {
 		// 1 - converts the formula to cnf
 		BooleanFormula cnf = BooleanFormula.toCnf(sudokuFormula);
+		Debug.printDebug("Transformation de la formule finale en CNF");
 
 		// 2 - get the clauses from the converted boolean formula
 		this.clauses = cnf.getClauses();
+		Debug.printDebug("Extraction des clauses de la formule finale");
 		
 		// 3 - get the variables map (Propositional -> DIMACS)
 		this.variablesMap = cnf.getVariablesMap();
@@ -161,6 +171,8 @@ public class SudokuPropositionalLogic {
 		for(Map.Entry<String, Integer> entry : this.variablesMap.entrySet()){
 			this.dimacsMap.put(entry.getValue(), entry.getKey());
 		}
+		
+		Debug.printDebug("Génération des maps de variables");
 	}
 	
 	
