@@ -1,7 +1,5 @@
 package sudoku;
 
-import java.util.Arrays;
-
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ContradictionException;
