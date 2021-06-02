@@ -1,7 +1,7 @@
 package sudoku;
 
 /**
- * Main class that demonstrate the sudoku resolver
+ * Main class that uses the sudoku sat solver to solve a sudoku created from the input args
  * 
  * @author Léo Monteiro (CODE PERMANENT)
  * @author Jules Emery (EMEJ05119405)
@@ -15,21 +15,23 @@ public class Main {
 		if(args.length != 1)
 			throw new Exception("You must pass exactly 1 parameter : the sudoku input string ! Got : " + args.length);
 		
-		// get the input string
-		String inputSudoku = args[0];
+		// get the sudoku input string
+		String sudokuInputString = args[0];
 		
-		// create the sudoku resolver from the input string
-		SudokuResolver resolver = new SudokuResolver(inputSudoku);
+		// create the sudoku
+		Sudoku sudoku = new Sudoku(sudokuInputString);
 		
-		// resolve the sudoku puzzle
-		String outputSudoku = resolver.resolve();
+		// try to resolve the sudoku with the sudoku SAT solver
+		SudokuSATSolver.getInstance().solve(sudoku);
 		
-		// print output puzzle string
-		System.out.println(outputSudoku);
+		// get the resulting output string
+		String sudokuOutputString = sudoku.getSudokuString();
 		
-		
-		// rich print for better visualization
-		displayRichIOSudoku(inputSudoku, outputSudoku);
+		// print the sudoku output string (resolved sudoku)
+		System.out.println(sudokuOutputString);
+
+		// rich print for better visualization (FOR DEBUG PURPOSES)
+		displayRichIOSudoku(sudokuInputString, sudokuOutputString);
 	}
 	
 	
@@ -40,7 +42,7 @@ public class Main {
 	// UTILS
 	
 	/**
-	 * Display next to each other, the initial (input) and resolved (output) sudoku passed in the parameters
+	 * Display next to each other, the input sudoku string and the output sudoku string passed in the parameters
 	 */
 	static private void displayRichIOSudoku(String input, String output) {
 		System.out.println("\n");
@@ -58,11 +60,7 @@ public class Main {
 		System.out.println("╚═════════════╩═════════════╝");
 	}
 	
-	/**
-	 * Split the passed sudoku string in chunks of length 9
-	 * @param puzzle string to split
-	 * @return array of chunks
-	 */
+	// split the passed sudoku string in chunks of length 9
 	static private String[] splitSudokuString(String puzzle) {
 		return puzzle.split("(?<=\\G.{9})");
 	}
