@@ -1,5 +1,7 @@
 package sudoku;
 
+import java.util.Arrays;
+
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ContradictionException;
@@ -21,7 +23,7 @@ public class SudokuSATSolver {
 	/**
 	 * Creates a SAT solver and initialize it with the sudoku propositional logic
 	 */
-	public SudokuSATSolver() throws SudokuException {
+	private SudokuSATSolver() throws SudokuException {
 		// get the sudoku propositional logic instance
 		SudokuPropositionalLogic sudokuLogic = SudokuPropositionalLogic.getInstance();
 		
