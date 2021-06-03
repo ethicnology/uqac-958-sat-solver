@@ -1,5 +1,6 @@
 package sudoku;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -7,8 +8,9 @@ import java.util.regex.Pattern;
  * it offers an interface to get and edit the sudoku's cells
  */
 public class Sudoku {
-	
+
 	public static final int SIZE = 9; // size of the sudoku
+	public static final int SQUARE_SIZE = 9; // size of a square in the sudoku (sub-grid)
 	public static final int VALUES_COUNT = SIZE + 1; // number of values that the sudoku contains (1-9 + one value for empty cells)
 	public static final int EMPTY_CELL = 0; // integer value of the empty cell
 	private static final char EMPTY_CHAR = '#'; // empty character for suroku string encoding
@@ -80,6 +82,51 @@ public class Sudoku {
 	        super(errorMessage, cause);
 	    }
 	}
+
+	
+	
+	//////////////////////////////////////////////////////////////////////
+	// UTILS FUNCTIONS TO GET POSITIONS IN SUDOKU
+	
+	/**
+	 * Returns a list of position corresponding to the sub-grid (3x3 square) of the cell
+	 * @param lin line of the cell
+	 * @param col column of the cell
+	 * @return list of position
+	 */
+	public static ArrayList<Pos> getSquare(int lin, int col) {
+		ArrayList<Pos> squareCells = new ArrayList<>();
+		
+		int linDepart = lin - (lin % SQUARE_SIZE);
+		int colDepart = col - (col % SQUARE_SIZE);
+		
+		for (int i = 0; i < SQUARE_SIZE; i++) {
+			
+			for (int j = 0; j < SQUARE_SIZE; j++) {
+				squareCells.add(new Pos(linDepart + i, colDepart + j));		
+			}			
+		}
+		
+		return squareCells;
+		
+		/*System.out.println("lin & col initial (" + lin + ", " + col + ")");
+		System.out.println("lin départ : " + linDepart);
+		System.out.println("col départ : " + colDepart);
+		System.out.println("Taille nineSquares : " + nineSquares.size());
+		System.out.print("nineSquares  {" );
+		for (int i=0; i<nineSquares.size(); i++) {
+			if (i==nineSquares.size()-1) {
+				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + ")");
+			} else {
+				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + "); ");	
+			}			
+		}
+		System.out.println("}" );
+			
+		System.out.println("/////////////////////////////////"); */
+	}
+	
+	public static ArrayList<Pos> getSquare(Pos pos) { return getSquare(pos.lin, pos.col); }
 
 	
 	
@@ -170,7 +217,7 @@ public class Sudoku {
 	/**
 	 * Utils class that defines positions (line and column)
 	 */
-	private static class Pos { public final int lin, col; public Pos(int lin, int col) { this.lin = lin; this.col = col; } }
+	public static class Pos { public final int lin, col; public Pos(int lin, int col) { this.lin = lin; this.col = col; } }
 	
 	/**
 	 * Utils class that defines a cell (line, column and value)

@@ -3,6 +3,14 @@ package sudoku;
 /**
  * Main class that uses the sudoku sat solver to solve a sudoku created from the input args
  * 
+ * Set Debug.PRINT_DEBUG to true for extended logging
+ * 
+ * #####8####74###5##8#####4#9#1#4##2#89##1##7##2##37#9#########5##3#91###25#8##7###
+ * 169548327374291586852763419617459238943182765285376941791824653436915872528637194
+ * 
+ * ####4###79#8#3########1#384####7###3######9#####9###4246#12######2##7###839##6###
+ * 613845297948732156725619384296574813384261975571983642467128539152397468839456721
+ * 
  * @author Léo Monteiro (CODE PERMANENT)
  * @author Jules Emery (EMEJ05119405)
  * @author Antoine Bouabana (BOUA25119908)

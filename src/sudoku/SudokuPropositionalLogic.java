@@ -188,12 +188,12 @@ public class SudokuPropositionalLogic {
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					List<BooleanFormula> valuesEligible = new ArrayList<>();
 					
-					ArrayList<int[]> square = getSquare(lin, col);	
+					ArrayList<Sudoku.Pos> square = Sudoku.getSquare(lin, col);	
 					
 					// for each line on current column
 					for(int deepness=0;  deepness<square.size(); deepness++) {
-						int deepLin = square.get(deepness)[0];
-						int deepCol = square.get(deepness)[1];
+						int deepLin = square.get(deepness).lin;
+						int deepCol = square.get(deepness).col;
 						
 						if (deepLin == lin && deepCol == col) continue;
 						
@@ -328,41 +328,5 @@ public class SudokuPropositionalLogic {
 	 */
 	private static String getVarNameFromCell(int lin, int col, int val) {
 		return "" + lin + ',' + col + '#' + val;
-	}
-	
-	private ArrayList<int[]> getSquare(int lin, int col){
-		ArrayList<int[]> nineSquares = new ArrayList<>();
-		int sqrtSize = (int) Math.sqrt(Sudoku.SIZE);
-		
-		int linDepart = lin - (lin % sqrtSize);
-		int colDepart = col - (col % sqrtSize);
-		
-		for (int i=0; i<sqrtSize;i++) {
-			
-			for (int j=0; j<sqrtSize;j++) {
-				int[] temp = {linDepart + i, colDepart + j};
-				
-				nineSquares.add(temp);		
-			}			
-		}
-		
-		
-		/*System.out.println("lin & col initial (" + lin + ", " + col + ")");
-		System.out.println("lin départ : " + linDepart);
-		System.out.println("col départ : " + colDepart);
-		System.out.println("Taille nineSquares : " + nineSquares.size());
-		System.out.print("nineSquares  {" );
-		for (int i=0; i<nineSquares.size(); i++) {
-			if (i==nineSquares.size()-1) {
-				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + ")");
-			} else {
-				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + "); ");	
-			}			
-		}
-		System.out.println("}" );
-			
-		System.out.println("/////////////////////////////////"); */
-		
-		return nineSquares;
 	}
 }
