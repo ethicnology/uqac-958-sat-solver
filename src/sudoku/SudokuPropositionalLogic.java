@@ -105,7 +105,34 @@ public class SudokuPropositionalLogic {
 	 * @return the formulas
 	 */
 	private BooleanFormula generateBooleanFormula2() {
-		List<BooleanFormula> formulas = new ArrayList<>();
+		List<BooleanFormula> formulas = new ArrayList<>();		
+		// for each line
+		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
+			// for each column
+			for(int col = 0; col < Sudoku.SIZE; col++) {
+				List<BooleanFormula> valuesOr = new ArrayList<>();	
+				
+				// for each value (to set to true)
+				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
+					List<BooleanFormula> valuesEligible = new ArrayList<>();
+					
+					// for each col on current line
+					for(int deepness=0;  deepness<Sudoku.SIZE; deepness++) {
+						if (deepness == col) continue;
+						
+						// for each value possible
+						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
+							if(valPossible == val) continue; // add Not(value) except for the current value
+							
+							valuesEligible.add(new Or(this.variables[lin][deepness][valPossible]));
+						}	
+					}		
+					valuesOr.add(new Or(new Not(this.variables[lin][col][val]), new Or(valuesEligible)));
+				}
+				
+				formulas.add(new Or(valuesOr));
+			}
+		}		
 		return new And(formulas);
 	}
 	
@@ -114,7 +141,34 @@ public class SudokuPropositionalLogic {
 	 * @return the formulas
 	 */
 	private BooleanFormula generateBooleanFormula3() {
-		List<BooleanFormula> formulas = new ArrayList<>();
+		List<BooleanFormula> formulas = new ArrayList<>();	
+		// for each line
+		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
+			// for each column
+			for(int col = 0; col < Sudoku.SIZE; col++) {
+				List<BooleanFormula> valuesOr = new ArrayList<>();	
+				
+				// for each value (to set to true)
+				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
+					List<BooleanFormula> valuesEligible = new ArrayList<>();
+					
+					// for each line on current column
+					for(int deepness=0;  deepness<Sudoku.SIZE; deepness++) {
+						if (deepness == lin) continue;
+						
+						// for each value (to set to false)
+						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
+							if(valPossible == val) continue; // add Not(value) except for the current value
+							
+							valuesEligible.add(new Or(this.variables[deepness][col][valPossible]));
+						}	
+					}	
+					valuesOr.add(new Or(new Not(this.variables[lin][col][val]), new Or(valuesEligible)));
+				}
+				
+				formulas.add(new Or(valuesOr));
+			}
+		}		
 		return new And(formulas);
 	}
 	
@@ -124,6 +178,39 @@ public class SudokuPropositionalLogic {
 	 */
 	private BooleanFormula generateBooleanFormula4() {
 		List<BooleanFormula> formulas = new ArrayList<>();
+		// for each line
+		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
+			// for each column
+			for(int col = 0; col < Sudoku.SIZE; col++) {
+				List<BooleanFormula> valuesOr = new ArrayList<>();	
+				
+				// for each value (to set to true)
+				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
+					List<BooleanFormula> valuesEligible = new ArrayList<>();
+					
+					ArrayList<int[]> square = getSquare(lin, col);	
+					
+					// for each line on current column
+					for(int deepness=0;  deepness<square.size(); deepness++) {
+						int deepLin = square.get(deepness)[0];
+						int deepCol = square.get(deepness)[1];
+						
+						if (deepLin == lin && deepCol == col) continue;
+						
+						// for each value (to set to false)
+						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
+							if(valPossible == val) continue; // add Not(value) except for the current value
+							
+							valuesEligible.add(new Or(this.variables[deepLin][deepCol][valPossible]));
+						}	
+					}	
+					valuesOr.add(new Or(new Not(this.variables[lin][col][val]), new Or(valuesEligible)));
+				}
+				
+				formulas.add(new Or(valuesOr));
+			}
+		}
+		
 		return new And(formulas);
 	}
 
@@ -241,5 +328,41 @@ public class SudokuPropositionalLogic {
 	 */
 	private static String getVarNameFromCell(int lin, int col, int val) {
 		return "" + lin + ',' + col + '#' + val;
+	}
+	
+	private ArrayList<int[]> getSquare(int lin, int col){
+		ArrayList<int[]> nineSquares = new ArrayList<>();
+		int sqrtSize = (int) Math.sqrt(Sudoku.SIZE);
+		
+		int linDepart = lin - (lin % sqrtSize);
+		int colDepart = col - (col % sqrtSize);
+		
+		for (int i=0; i<sqrtSize;i++) {
+			
+			for (int j=0; j<sqrtSize;j++) {
+				int[] temp = {linDepart + i, colDepart + j};
+				
+				nineSquares.add(temp);		
+			}			
+		}
+		
+		
+		/*System.out.println("lin & col initial (" + lin + ", " + col + ")");
+		System.out.println("lin départ : " + linDepart);
+		System.out.println("col départ : " + colDepart);
+		System.out.println("Taille nineSquares : " + nineSquares.size());
+		System.out.print("nineSquares  {" );
+		for (int i=0; i<nineSquares.size(); i++) {
+			if (i==nineSquares.size()-1) {
+				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + ")");
+			} else {
+				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + "); ");	
+			}			
+		}
+		System.out.println("}" );
+			
+		System.out.println("/////////////////////////////////"); */
+		
+		return nineSquares;
 	}
 }
