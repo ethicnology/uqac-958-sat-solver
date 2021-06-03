@@ -15,6 +15,14 @@ import sudoku.Sudoku;
 import sudoku.SudokuSATSolver;
 import sudoku.Sudoku.SudokuException;
 
+/**
+ * Test sudokus SAT solver system
+ * 
+ **************** USE ONLY JUNIT 5 !!!! ****************
+ **************** USE ONLY JUNIT 5 !!!! ****************
+ **************** USE ONLY JUNIT 5 !!!! ****************
+ **************** USE ONLY JUNIT 5 !!!! ****************
+ */
 class SudokuTest {
 	
 	private static SudokuSATSolver solver;
