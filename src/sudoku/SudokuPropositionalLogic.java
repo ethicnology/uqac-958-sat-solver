@@ -84,6 +84,10 @@ public class SudokuPropositionalLogic {
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					List<BooleanFormula> notValues = new ArrayList<>();
 					
+					if (val == 0) {
+						notValues.add(new Not(this.variables[lin][col][val]));
+					}
+					
 					// for each value (to set to false)
 					for(int notVal = 0; notVal < Sudoku.VALUES_COUNT; notVal++) {
 						if(notVal == val) continue; // add Not(value) except for the current value
