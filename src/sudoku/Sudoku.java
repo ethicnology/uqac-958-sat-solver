@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class Sudoku {
 
 	public static final int SIZE = 9; // size of the sudoku
-	public static final int SQUARE_SIZE = 9; // size of a square in the sudoku (sub-grid)
+	public static final int SQUARE_SIZE = 3; // size of a square in the sudoku (sub-grid)
 	public static final int VALUES_COUNT = SIZE + 1; // number of values that the sudoku contains (1-9 + one value for empty cells)
 	public static final int EMPTY_CELL = 0; // integer value of the empty cell
 	public static final int ERROR_CELL = -1; // integer value of an error cell

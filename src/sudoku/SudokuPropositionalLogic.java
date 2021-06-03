@@ -7,6 +7,7 @@ import java.util.Map;
 
 import stev.booleans.And;
 import stev.booleans.BooleanFormula;
+import stev.booleans.Implies;
 import stev.booleans.Not;
 import stev.booleans.Or;
 import stev.booleans.PropositionalVariable;
@@ -57,8 +58,8 @@ public class SudokuPropositionalLogic {
 		BooleanFormula formula4 = this.generateBooleanFormula4();
 		
 		// 3 - combine all the formulas into the sudoku formula
-		this.sudokuFormula = new And(formula1); // TEMP (ajouter les formules à mesure qu'on les développe)
-		//this.sudokuFormula = new And(formula1, formula2, formula3, formula4);
+		//this.sudokuFormula = new And(formula1); // TEMP (ajouter les formules à mesure qu'on les développe)
+		this.sudokuFormula = new And(formula1, formula2, formula3, formula4);
 		Debug.printDebug("Création et fusion des formules pour les 4 conditions du sudoku");
 		
 		// 4 - generate the clauses and the variables maps
@@ -73,7 +74,6 @@ public class SudokuPropositionalLogic {
 	 */
 	private BooleanFormula generateBooleanFormula1() {
 		List<BooleanFormula> formulas = new ArrayList<>();
-		
 		// for each line
 		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
 			// for each column
@@ -97,20 +97,19 @@ public class SudokuPropositionalLogic {
 				formulas.add(new Or(valuesAnd));
 			}
 		}
-		
 		return new And(formulas);
 		
-		/*
+		
 		// test invalid sudoku
-		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
+		/*for(int lin = 0; lin < Sudoku.SIZE; lin++) {
 			for(int col = 0; col < Sudoku.SIZE; col++) {
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					formulas.add(this.variables[lin][col][val]);
 				}
 			}
 		}
-		return new Or(formulas);
-		*/
+		return new Or(formulas);*/
+		
 	}
 	
 	/**
@@ -123,7 +122,6 @@ public class SudokuPropositionalLogic {
 		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
 			// for each column
 			for(int col = 0; col < Sudoku.SIZE; col++) {
-				List<BooleanFormula> valuesOr = new ArrayList<>();	
 				
 				// for each value (to set to true)
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
@@ -133,17 +131,14 @@ public class SudokuPropositionalLogic {
 					for(int deepness=0;  deepness<Sudoku.SIZE; deepness++) {
 						if (deepness == col) continue;
 						
-						// for each value possible
+						// for each value possible other cases
 						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
-							if(valPossible == val) continue; // add Not(value) except for the current value
-							
-							valuesEligible.add(new Or(this.variables[lin][deepness][valPossible]));
+							if(valPossible == val) 						
+								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[lin][deepness][val])));
 						}	
 					}		
-					valuesOr.add(new Or(new Not(this.variables[lin][col][val]), new Or(valuesEligible)));
+					formulas.add(new And(valuesEligible));
 				}
-				
-				formulas.add(new Or(valuesOr));
 			}
 		}		
 		return new And(formulas);
@@ -159,27 +154,23 @@ public class SudokuPropositionalLogic {
 		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
 			// for each column
 			for(int col = 0; col < Sudoku.SIZE; col++) {
-				List<BooleanFormula> valuesOr = new ArrayList<>();	
 				
 				// for each value (to set to true)
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					List<BooleanFormula> valuesEligible = new ArrayList<>();
 					
-					// for each line on current column
+					// for each line on current col
 					for(int deepness=0;  deepness<Sudoku.SIZE; deepness++) {
 						if (deepness == lin) continue;
 						
-						// for each value (to set to false)
+						// for each value possible other cases
 						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
-							if(valPossible == val) continue; // add Not(value) except for the current value
-							
-							valuesEligible.add(new Or(this.variables[deepness][col][valPossible]));
+							if(valPossible == val) 						
+								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepness][col][val])));
 						}	
-					}	
-					valuesOr.add(new Or(new Not(this.variables[lin][col][val]), new Or(valuesEligible)));
+					}		
+					formulas.add(new And(valuesEligible));
 				}
-				
-				formulas.add(new Or(valuesOr));
 			}
 		}		
 		return new And(formulas);
@@ -212,15 +203,12 @@ public class SudokuPropositionalLogic {
 						
 						// for each value (to set to false)
 						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
-							if(valPossible == val) continue; // add Not(value) except for the current value
-							
-							valuesEligible.add(new Or(this.variables[deepLin][deepCol][valPossible]));
+							if(valPossible == val) 						
+								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepLin][deepCol][val])));
 						}	
 					}	
-					valuesOr.add(new Or(new Not(this.variables[lin][col][val]), new Or(valuesEligible)));
+					formulas.add(new And(valuesEligible));
 				}
-				
-				formulas.add(new Or(valuesOr));
 			}
 		}
 		
