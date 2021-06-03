@@ -1,4 +1,4 @@
-package sudoku;
+package sudoku.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,6 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import sudoku.Sudoku;
+import sudoku.SudokuSATSolver;
 import sudoku.Sudoku.SudokuException;
 
 class SudokuTest {

@@ -1,3 +1,4 @@
+package example;
 import org.sat4j.core.*;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ContradictionException;

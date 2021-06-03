@@ -1,5 +1,7 @@
 package sudoku;
 
+import sudoku.utils.Debug;
+
 /**
  * Main class that uses the sudoku sat solver to solve a sudoku created from the input args
  * 

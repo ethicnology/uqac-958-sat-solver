@@ -1,4 +1,4 @@
-package sudoku;
+package sudoku.utils;
 
 import stev.booleans.BooleanFormula;
 

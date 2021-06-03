@@ -10,8 +10,9 @@ import stev.booleans.BooleanFormula;
 import stev.booleans.Not;
 import stev.booleans.Or;
 import stev.booleans.PropositionalVariable;
-import sudoku.Debug.PrintMode;
 import sudoku.Sudoku.Cell;
+import sudoku.utils.Debug;
+import sudoku.utils.Debug.PrintMode;
 
 /**
  * Singleton that defines the propositional logic behind a Sudoku (propositional variables and boolean formulas for the 4 conditions).

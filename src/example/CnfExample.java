@@ -1,3 +1,4 @@
+package example;
 /*
     Simple manipulation of Boolean formulas
     Copyright (C) 2020 Sylvain Hallé

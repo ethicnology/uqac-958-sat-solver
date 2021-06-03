@@ -8,9 +8,10 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 
 import stev.booleans.PropositionalVariable;
-import sudoku.Debug.PrintMode;
 import sudoku.Sudoku.Cell;
 import sudoku.Sudoku.SudokuException;
+import sudoku.utils.Debug;
+import sudoku.utils.Debug.PrintMode;
 
 /**
  * Resolves a given sudoku with a SAT solver and propositional logic based on SudokuPropositionalLogic
