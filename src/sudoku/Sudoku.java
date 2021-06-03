@@ -15,7 +15,7 @@ public class Sudoku {
 	public static final int EMPTY_CELL = 0; // integer value of the empty cell
 	public static final int ERROR_CELL = -1; // integer value of an error cell
 	private static final char EMPTY_CHAR = '#'; // empty character for sudoku string encoding
-	public static final char ERROR_CHAR = 'X'; // error character for sudoku string encoding
+	public static final char ERROR_CHAR = '!'; // error character for sudoku string encoding
 
 	private int[][] sudoku;
 	
@@ -84,6 +84,11 @@ public class Sudoku {
 	        super(errorMessage, cause);
 	    }
 	}
+	
+	// ERROR MESSAGES
+	public static final String CONVERSION_ERROR = "An error occured while converting the sudoku !";
+	public static final String SUDOKU_STRING_LENGTH_ERROR = "The puzzle string must be 81 characters long. Got : %d";
+	public static final String SUDOKU_STRING_PATTERN_ERROR = "The puzzle string must only contains '#' and digits '1-9'. Got : %s";
 
 	
 	
@@ -110,22 +115,6 @@ public class Sudoku {
 		}
 		
 		return squareCells;
-		
-		/*System.out.println("lin & col initial (" + lin + ", " + col + ")");
-		System.out.println("lin départ : " + linDepart);
-		System.out.println("col départ : " + colDepart);
-		System.out.println("Taille nineSquares : " + nineSquares.size());
-		System.out.print("nineSquares  {" );
-		for (int i=0; i<nineSquares.size(); i++) {
-			if (i==nineSquares.size()-1) {
-				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + ")");
-			} else {
-				System.out.print("(" + nineSquares.get(i)[0] + ", " + nineSquares.get(i)[1] + "); ");	
-			}			
-		}
-		System.out.println("}" );
-			
-		System.out.println("/////////////////////////////////"); */
 	}
 	
 	public static ArrayList<Pos> getSquare(Pos pos) { return getSquare(pos.lin, pos.col); }
@@ -162,7 +151,7 @@ public class Sudoku {
 				res[position.lin][position.col] = value;
 			}
 			catch(NumberFormatException e) {
-				throw new SudokuException("An error occured while translating the sudoku !");
+				throw new SudokuException(CONVERSION_ERROR);
 			}
 		}
 		
@@ -212,10 +201,10 @@ public class Sudoku {
 		Pattern puzzlePattern = Pattern.compile("[#1-9]*");
 		
 		if(sudokuString.length() != 81)
-			throw new SudokuException("The puzzle string must be 81 characters long. Got : " + sudokuString.length());
+			throw new SudokuException(String.format(SUDOKU_STRING_LENGTH_ERROR, sudokuString.length()));
 		
 		if(!puzzlePattern.matcher(sudokuString).matches())
-			throw new SudokuException("The puzzle string must only contains '#' and digits '1-9'. Got : " + sudokuString);
+			throw new SudokuException(String.format(SUDOKU_STRING_PATTERN_ERROR, sudokuString));
 	}
 	
 	

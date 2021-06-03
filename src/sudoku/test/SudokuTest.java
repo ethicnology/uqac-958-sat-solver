@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,12 +20,61 @@ class SudokuTest {
 	private static SudokuSATSolver solver;
 	
 	@BeforeAll
-	private static void init() throws SudokuException {
+	static void init() throws SudokuException {
 		solver = SudokuSATSolver.getInstance();
 	}
+	
+	@Test
+	@DisplayName("Test sudoku input invalide (longueur de chaîne)")
+	void testInvalidSudokuStringLength() {
+		String invalidSudoku = "##########";
+		
+		SudokuException exception = assertThrows(SudokuException.class, () -> {
+			Sudoku sudoku = new Sudoku(invalidSudoku);
+		});
+		
+		assertEquals(String.format(Sudoku.SUDOKU_STRING_LENGTH_ERROR, invalidSudoku.length()), exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName("Test sudoku input invalide (mauvais caractères)")
+	void testInvalidSudokuStringPattern() {
+		String invalidSudoku = "?################################################################################";
+		
+		SudokuException exception = assertThrows(SudokuException.class, () -> {
+			Sudoku sudoku = new Sudoku(invalidSudoku);
+		});
+		
+		assertEquals(String.format(Sudoku.SUDOKU_STRING_PATTERN_ERROR, invalidSudoku), exception.getMessage());
+	}
+	
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("provideSudokuFail")
+	@DisplayName("Test des échecs des conditions")
+	void testSudokuUnresovable(String input, String testName) {
+		SudokuException exception = assertThrows(SudokuException.class, () -> {
+			Sudoku sudoku = new Sudoku(input);
+			solver.solve(sudoku);
+		});
+		
+		assertEquals(SudokuSATSolver.SOLVE_ERROR, exception.getMessage());
+	}
+	
+	/**
+	 * Returns sudoku that fails
+	 */
+	static Stream<Arguments> provideSudokuFail() {
+	    return Stream.of(
+  	      Arguments.of("11###############################################################################","Sudoku non respect condition 2 (ligne)"),
+	      Arguments.of("1########1#######################################################################","Sudoku non respect condition 3 (colonne)"),
+	      Arguments.of("1#######1########################################################################","Sudoku non respect condition 4 (case)")
+	    );
+	}
+	
 
 	@ParameterizedTest(name = "Sudoku {index}")
 	@MethodSource("provideSudokuTestSource")
+	@DisplayName("Test de sudoku que l'on peut résoudre")
 	void testSudokuParametrized(String input, String output) {
 		try {
 			Sudoku sudoku = new Sudoku(input);
@@ -37,7 +88,7 @@ class SudokuTest {
 	/**
 	 * Returns 10 sudoku input and output
 	 */
-	private static Stream<Arguments> provideSudokuTestSource() {
+	static Stream<Arguments> provideSudokuTestSource() {
 	    return Stream.of(
 	      Arguments.of("#########7#9##85###8#5#######1#####8####61#2##2##8##59#13##78##857###9#######6###","265149783739628514184573296471295638598361427326784159613957842857432961942816375"),
 	      Arguments.of("6##1#####1###4#8#6#9#######4####751##6#3####8##79#5##47###########8#39#55########","654138297172549836398276451423687519965314728817925364739451682241863975586792143"),

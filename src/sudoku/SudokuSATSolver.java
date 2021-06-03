@@ -44,7 +44,7 @@ public class SudokuSATSolver {
 			try {
 				this.solver.addClause(new VecInt(clause));
 			} catch (ContradictionException error) {
-				throw new SudokuException("An error occured while creating the SAT solver", error);
+				throw new SudokuException(INITIALIZATION_ERROR, error);
 			}
 		}
 		
@@ -84,10 +84,10 @@ public class SudokuSATSolver {
 				Debug.printDebug("Application du modèle au sudoku");
 			}
 			// else, throw because the sudoku isn't resolvable
-			else throw new SudokuException("This sudoku cannot be resolved !");
+			else throw new SudokuException(SOLVE_ERROR);
 		}
 		catch (TimeoutException error) {
-			throw new SudokuException("An error occured while checking the satisfiability of the SAT problem", error);
+			throw new SudokuException(SATISFABILITY_ERROR, error);
 		}
 
 		Debug.printDebug("SudokuSATSolver.solve() - résolution du sudoku", PrintMode.END);
@@ -184,4 +184,13 @@ public class SudokuSATSolver {
 			}
 		}
 	}
+	
+	
+	
+	//////////////////////////////////////////////////////////////////////
+	// ERROR MESSAGES
+
+	public static final String SOLVE_ERROR = "This sudoku cannot be resolved !";
+	public static final String SATISFABILITY_ERROR = "An error occured while checking the satisfiability of the SAT problem";
+	public static final String INITIALIZATION_ERROR = "An error occured while creating the SAT solver";
 }

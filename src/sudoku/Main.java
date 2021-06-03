@@ -13,7 +13,7 @@ import sudoku.utils.Debug;
  * ####4###79#8#3########1#384####7###3######9#####9###4246#12######2##7###839##6###
  * 613845297948732156725619384296574813384261975571983642467128539152397468839456721
  * 
- * @author Léo Monteiro (CODE PERMANENT)
+ * @author Léo Monteiro (MONL29079907)
  * @author Jules Emery (EMEJ05119405)
  * @author Antoine Bouabana (BOUA25119908)
  *
@@ -23,10 +23,10 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		// verify that an agurment has been given to the main
 		if(args.length != 1)
-			throw new Exception("You must pass exactly 1 parameter : the sudoku input string ! Got : " + args.length);
+			throw new Exception("You must pass exactly 1 parameter : the sudoku input string ! Got : " + args.length + " parameter(s).");
 		
-		// DEBUG ONLY !!! (comment to disable Debug logging)
-		Debug.PRINT_DEBUG = true;
+		// SET TO TRUE FOR RICH DEBUG LOGGING !!!
+		Debug.PRINT_DEBUG = false;
 		
 		// get the sudoku input string
 		String sudokuInputString = args[0];

@@ -101,19 +101,8 @@ public class SudokuPropositionalLogic {
 				formulas.add(new Or(valuesAnd));
 			}
 		}
+		
 		return new And(formulas);
-		
-		
-		// test invalid sudoku
-		/*for(int lin = 0; lin < Sudoku.SIZE; lin++) {
-			for(int col = 0; col < Sudoku.SIZE; col++) {
-				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
-					formulas.add(this.variables[lin][col][val]);
-				}
-			}
-		}
-		return new Or(formulas);*/
-		
 	}
 	
 	/**
@@ -140,11 +129,13 @@ public class SudokuPropositionalLogic {
 							if(valPossible == val) 						
 								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[lin][deepness][val])));
 						}	
-					}		
+					}
+					
 					formulas.add(new And(valuesEligible));
 				}
 			}
-		}		
+		}
+		
 		return new And(formulas);
 	}
 	
@@ -172,11 +163,13 @@ public class SudokuPropositionalLogic {
 							if(valPossible == val) 						
 								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepness][col][val])));
 						}	
-					}		
+					}
+					
 					formulas.add(new And(valuesEligible));
 				}
 			}
-		}		
+		}
+		
 		return new And(formulas);
 	}
 	
@@ -190,8 +183,6 @@ public class SudokuPropositionalLogic {
 		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
 			// for each column
 			for(int col = 0; col < Sudoku.SIZE; col++) {
-				List<BooleanFormula> valuesOr = new ArrayList<>();	
-				
 				// for each value (to set to true)
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					List<BooleanFormula> valuesEligible = new ArrayList<>();
@@ -210,7 +201,8 @@ public class SudokuPropositionalLogic {
 							if(valPossible == val) 						
 								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepLin][deepCol][val])));
 						}	
-					}	
+					}
+					
 					formulas.add(new And(valuesEligible));
 				}
 			}
@@ -298,9 +290,7 @@ public class SudokuPropositionalLogic {
 	 * @param varName propositional variable name
 	 * @return a cell
 	 */
-	public Sudoku.Cell getCellFromVarName(String varName) {
-		return this.cellsMap.get(varName);
-	}
+	public Sudoku.Cell getCellFromVarName(String varName) { return this.cellsMap.get(varName); }
 	
 	
 	
