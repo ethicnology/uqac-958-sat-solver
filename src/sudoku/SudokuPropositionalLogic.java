@@ -99,6 +99,18 @@ public class SudokuPropositionalLogic {
 		}
 		
 		return new And(formulas);
+		
+		/*
+		// test invalid sudoku
+		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
+			for(int col = 0; col < Sudoku.SIZE; col++) {
+				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
+					formulas.add(this.variables[lin][col][val]);
+				}
+			}
+		}
+		return new Or(formulas);
+		*/
 	}
 	
 	/**

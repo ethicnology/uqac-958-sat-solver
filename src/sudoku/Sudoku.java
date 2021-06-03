@@ -13,7 +13,9 @@ public class Sudoku {
 	public static final int SQUARE_SIZE = 9; // size of a square in the sudoku (sub-grid)
 	public static final int VALUES_COUNT = SIZE + 1; // number of values that the sudoku contains (1-9 + one value for empty cells)
 	public static final int EMPTY_CELL = 0; // integer value of the empty cell
-	private static final char EMPTY_CHAR = '#'; // empty character for suroku string encoding
+	public static final int ERROR_CELL = -1; // integer value of an error cell
+	private static final char EMPTY_CHAR = '#'; // empty character for sudoku string encoding
+	public static final char ERROR_CHAR = 'X'; // error character for sudoku string encoding
 
 	private int[][] sudoku;
 	
@@ -177,7 +179,23 @@ public class Sudoku {
 		
 		for(int[] line : sudoku) {
 			for(int cell : line) {
-				res += cell == 0 ? EMPTY_CHAR : String.valueOf(cell);
+				String value;
+				
+				switch(cell) {
+					case EMPTY_CELL:
+						value = String.valueOf(EMPTY_CHAR);
+						break;
+
+					case ERROR_CELL:
+						value = String.valueOf(ERROR_CHAR);
+						break;
+						
+					default:
+						value = String.valueOf(cell);
+						break;
+				}
+				
+				res += value;
 			}
 		}
 		

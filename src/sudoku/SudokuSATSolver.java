@@ -1,5 +1,8 @@
 package sudoku;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ContradictionException;
@@ -114,48 +117,70 @@ public class SudokuSATSolver {
 	 * Returns the assumptions for the given sudoku (converts sudoku values in DIMACS format values based on propositional variables and variables mapping)
 	 */
 	private static int[] getAssumptionsFromSudoku(Sudoku sudoku, SudokuPropositionalLogic sudokuLogic) {
-		int[] assumptions = new int[sudokuLogic.getPropositionalVariablesCount()];
+		List<Integer> assumptions = new ArrayList<>();
 		
 		PropositionalVariable[][][] variables = sudokuLogic.getPropositionalVariables();
-		
-		int index = 0;
 		
 		// for each line
 		for(int lin = 0; lin < variables.length; lin++) {
 			// for each column
 			for(int col = 0; col < variables[lin].length; col++) {
-				// for each value
-				for(int value = 0; value < variables[lin][col].length; value++) {
-					String varName = variables[lin][col][value].toString();
-					int dimacsVar = sudokuLogic.getDimacsFromVarName(varName);
+				int sudokuVal = sudoku.getCell(lin, col);
+				
+				// if the sudoku cell isn't empty, we set the values of the corresponding propositional variables
+				if(sudokuVal != Sudoku.EMPTY_CELL) {
 					
-					boolean isTrue = sudoku.getCell(lin, col) == value;
-					
-					if(isTrue) assumptions[index] = dimacsVar;
-					else assumptions[index] = -dimacsVar;
-
-					index++;
+					// for each variable value
+					for(int val = 0; val < variables[lin][col].length; val++) {
+						String varName = variables[lin][col][val].toString();
+						int dimacsVar = sudokuLogic.getDimacsFromVarName(varName);
+						
+						boolean isTrue = val == sudokuVal;
+						
+						if(isTrue) assumptions.add(dimacsVar);
+						else assumptions.add(-dimacsVar);
+					}
 				}
 			}
 		}
 		
-		return assumptions;
+		return assumptions.stream().mapToInt(Integer::intValue).toArray();
 	}
 	
 	/**
 	 * Updates the given sudoku with the given model
 	 */
 	private static void updateSudokuWithModel(Sudoku sudoku, SudokuPropositionalLogic sudokuLogic, int[] model) {
-		// for each variable of the model
+		// temporary mapping of all variables value
+		boolean[][][] variableValues = new boolean[Sudoku.SIZE][Sudoku.SIZE][Sudoku.VALUES_COUNT];
+		
+		// for each variable of the model, assign it the the temporary variables value
 		for(int modelVar : model) {
-			// if the variable is true, we set the variable in the sudoku
-			if(modelVar > 0) {
-				int dimacs = Math.abs(modelVar);
-				String varName = sudokuLogic.getVarNameFromDimacs(dimacs);
-				Cell cell = sudokuLogic.getCellFromVarName(varName);
+			boolean isTrue = modelVar > 0;
+			int dimacs = Math.abs(modelVar);
+			String varName = sudokuLogic.getVarNameFromDimacs(dimacs);
+			Cell cell = sudokuLogic.getCellFromVarName(varName);
+			
+			variableValues[cell.lin][cell.col][cell.val] = isTrue;
+		}
+		
+		// go through all the variables and assign values to the sudoku
+		for(int lin = 0; lin < variableValues.length; lin++) {
+			for(int col = 0; col < variableValues[lin].length; col++) {
+				int countVar = 0;
 				
-				// set the cell to the good value
-				sudoku.setCell(cell);
+				for(int val = 0; val < variableValues[lin][col].length; val++) {
+					boolean varValue = variableValues[lin][col][val];
+					
+					// if variable value is true, assign it to the sudoku
+					if(varValue) {
+						sudoku.setCell(lin, col, val);
+						countVar++;
+					}
+				}
+				
+				// if cell has no value at all or more than 1, error
+				if(countVar != 1) sudoku.setCell(lin, col, Sudoku.ERROR_CELL);
 			}
 		}
 	}

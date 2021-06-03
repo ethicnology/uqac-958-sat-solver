@@ -1,5 +1,7 @@
 package sudoku.utils;
 
+import java.util.Arrays;
+
 import stev.booleans.BooleanFormula;
 
 public class Debug {
@@ -17,7 +19,13 @@ public class Debug {
 		printBigFormula(formula, 300);
 	}
 
-	
+	public static void printArray(Object[] toPrint) {
+		System.out.println(Arrays.toString(toPrint));
+	}
+
+	public static void printArray(int[] toPrint) {
+		System.out.println(Arrays.toString(toPrint));
+	}
 	
 	
 	
