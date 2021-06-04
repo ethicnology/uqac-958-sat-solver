@@ -103,7 +103,7 @@ public class SudokuPropositionalLogic {
 		}
 		
 		return new And(formulas);
-	}
+	}	
 	
 	/**
 	 * Generate formula for condition 2 (1 value per line)
@@ -116,21 +116,19 @@ public class SudokuPropositionalLogic {
 			// for each column
 			for(int col = 0; col < Sudoku.SIZE; col++) {
 				
-				// for each value (to set to true)
+				// for each value possible
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					List<BooleanFormula> valuesEligible = new ArrayList<>();
 					
-					// for each col on current line
+					// for each column on current line
 					for(int deepness=0;  deepness<Sudoku.SIZE; deepness++) {
-						if (deepness == col) continue;
+						if (deepness == col) continue;	//if we're looking at the same small square		
 						
-						// for each value possible other cases
-						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
-							if(valPossible == val) 						
-								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[lin][deepness][val])));
-						}	
+						//The value in the current square implies we can't use it in the other square of the same line
+						valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[lin][deepness][val]))); 
 					}
 					
+					//We add the restrictions to the formulas
 					formulas.add(new And(valuesEligible));
 				}
 			}
@@ -150,21 +148,19 @@ public class SudokuPropositionalLogic {
 			// for each column
 			for(int col = 0; col < Sudoku.SIZE; col++) {
 				
-				// for each value (to set to true)
+				// for each value possible in a square
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					List<BooleanFormula> valuesEligible = new ArrayList<>();
 					
-					// for each line on current col
+					// for each line on current column
 					for(int deepness=0;  deepness<Sudoku.SIZE; deepness++) {
-						if (deepness == lin) continue;
-						
-						// for each value possible other cases
-						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
-							if(valPossible == val) 						
-								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepness][col][val])));
-						}	
+						if (deepness == lin) continue; //if we're looking at the same small square we do nothing		
+								
+						//The value in the current square implies we can't use it in the other square of the same column
+						valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepness][col][val])));
 					}
 					
+					//We add the restrictions to the formulas
 					formulas.add(new And(valuesEligible));
 				}
 			}
@@ -183,26 +179,27 @@ public class SudokuPropositionalLogic {
 		for(int lin = 0; lin < Sudoku.SIZE; lin++) {
 			// for each column
 			for(int col = 0; col < Sudoku.SIZE; col++) {
-				// for each value (to set to true)
+				
+				// for each value possible in a square
 				for(int val = 0; val < Sudoku.VALUES_COUNT; val++) {
 					List<BooleanFormula> valuesEligible = new ArrayList<>();
 					
+					//We get the 9 squares restriction for the current position (lin,col)
 					ArrayList<Sudoku.Pos> square = Sudoku.getSquare(lin, col);	
 					
-					// for each line on current column
+					//For each square in the 9 squares restriction
 					for(int deepness=0;  deepness<square.size(); deepness++) {
-						int deepLin = square.get(deepness).lin;
-						int deepCol = square.get(deepness).col;
 						
-						if (deepLin == lin && deepCol == col) continue;
-						
-						// for each value (to set to false)
-						for(int valPossible = 0; valPossible < Sudoku.VALUES_COUNT; valPossible++) {
-							if(valPossible == val) 						
-								valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepLin][deepCol][val])));
-						}	
+						/* Getting the position of the square to restrict */
+						int deepLin = square.get(deepness).lin; 
+						int deepCol = square.get(deepness).col;						
+						if (deepLin == lin && deepCol == col) continue; //If the square is the same one as we check its value, we do nothing 
+										
+						//The value in the current square implies that we can't use it in the other square of the 9 squares restriction
+						valuesEligible.add(new Implies(this.variables[lin][col][val], new Not(this.variables[deepLin][deepCol][val])));	
 					}
 					
+					//We add the restrictions to the formulas
 					formulas.add(new And(valuesEligible));
 				}
 			}

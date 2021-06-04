@@ -104,13 +104,19 @@ public class Sudoku {
 	public static ArrayList<Pos> getSquare(int lin, int col) {
 		ArrayList<Pos> squareCells = new ArrayList<>();
 		
-		int linDepart = lin - (lin % SQUARE_SIZE);
-		int colDepart = col - (col % SQUARE_SIZE);
+		/* Getting the index of the origin for the 9 squares restriction
+		 * Ex : (0,0); (0,3); (0,6); (3,0); (3,3); ...; (6,6)
+		 */
+		int lineStart = lin - (lin % SQUARE_SIZE);
+		int columnStart = col - (col % SQUARE_SIZE);
 		
-		for (int i = 0; i < SQUARE_SIZE; i++) {
-			
+		//Getting the 3 squares on the line 
+		for (int i = 0; i < SQUARE_SIZE; i++) {	
+			//Getting the 3 squares on the column 
 			for (int j = 0; j < SQUARE_SIZE; j++) {
-				squareCells.add(new Pos(linDepart + i, colDepart + j));		
+				
+				//Adding the squares to the 9 square restriction
+				squareCells.add(new Pos(lineStart + i, columnStart + j));		
 			}			
 		}
 		
