@@ -13,9 +13,6 @@ import sudoku.utils.Debug;
  * ####4###79#8#3########1#384####7###3######9#####9###4246#12######2##7###839##6###
  * 613845297948732156725619384296574813384261975571983642467128539152397468839456721
  * 
- * @author Léo Monteiro (MONL29079907)
- * @author Jules Emery (EMEJ05119405)
- * @author Antoine Bouabana (BOUA25119908)
  *
  */
 public class Main {
